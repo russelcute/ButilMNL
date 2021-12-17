@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?attr/selectableItemBackground"
+    android:layout_width="match_parent"
+    android:padding="20dp"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_orderImage"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/almond"
+        tools:ignore="ContentDescription" />
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_marginStart="10dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/iv_orderStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Order on December,13,2021"
+            android:textColor="@color/brown"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/iv_orderBrand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Almond"
+            android:textColor="@color/brown"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:rotation="270"
+        android:src="@drawable/ic_baseline_arrow_circle_down_24"
+        tools:ignore="ContentDescription" />
+
+</LinearLayout>

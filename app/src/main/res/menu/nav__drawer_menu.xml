@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    android:background="@color/brown"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:id="@+id/nav">
+        <item
+            android:textColor="@color/brown"
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_baseline_home_24"
+            android:title="@string/home"/>
+        <item
+            android:textColor="@color/brown"
+            android:id="@+id/nav_order"
+            android:icon="@drawable/ic_baseline_shopping_basket_24"
+            android:title="@string/order"/>
+        <item
+            android:textColor="@color/brown"
+            android:id="@+id/nav_cart"
+            android:icon="@drawable/ic_baseline_shopping_cart_24"
+            android:title="@string/add_to_cart"/>
+    </group>
+
+    <group android:id="@+id/nav1">
+        <item
+            android:textColor="@color/brown"
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_baseline_person_pin_24"
+            android:title="@string/profile"/>
+        <item
+            android:textColor="@color/brown"
+            android:id="@+id/nav_notification"
+            android:icon="@drawable/ic_baseline_notifications_24"
+            android:title="@string/notification"/>
+        <item
+            android:textColor="@color/brown"
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_baseline_campaign_24"
+            android:title="@string/help"/>
+        <item
+            android:textColor="@color/brown"
+            android:id="@+id/nav_privacy"
+            android:icon="@drawable/ic_baseline_security_24"
+            android:title="@string/privacy"/>
+        <item
+            android:textColor="@color/brown"
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_baseline_supervised_user_circle_24"
+            android:title="@string/about"/>
+    </group>
+
+    <group android:id="@+id/nav2">
+        <item
+            android:textColor="@color/brown"
+            android:id="@+id/nav_rate"
+            android:icon="@drawable/ic_baseline_thumb_up_24"
+            android:title="@string/rate_app"/>
+        <item
+            android:textColor="@color/brown"
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_baseline_exit_to_app_24"
+            android:title="@string/log_out"/>
+    </group>
+
+</menu>

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "703610325685",
+    "project_id": "butil-ordering",
+    "storage_bucket": "butil-ordering.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:703610325685:android:48ddcc51151b5c57250cfc",
+        "android_client_info": {
+          "package_name": "com.ruzz.butilordering"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "703610325685-kio9s7nkc7ic4d3otnbqgg4c622gli2i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ruzz.butilordering",
+            "certificate_hash": "6b3ccdd4191f1f39cbe382785f0e476c9bc8415d"
+          }
+        },
+        {
+          "client_id": "703610325685-jv1c7ilrpnk3v5kdou9ei8ec394n9idp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClLpiK6RI5n7JtpaCZF0lkAsUt880lNXo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "703610325685-jv1c7ilrpnk3v5kdou9ei8ec394n9idp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
