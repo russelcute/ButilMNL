@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="5dp"
+    app:cardCornerRadius="5dp"
+    android:layout_margin="5dp"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/txt_dealsDiscountedPercentage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/red"
+            android:justificationMode="inter_word"
+            android:paddingHorizontal="10dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:elevation="3dp"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText,SmallSp,UnusedAttribute,TouchTargetSizeCheck,TextContrastCheck" />
+
+        <ImageView
+            android:id="@+id/rv_dealsImage"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:scaleType="centerCrop"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/fivespcie"
+            tools:ignore="ContentDescription" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_dealsTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rv_dealsImage"
+            android:textSize="13sp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/customer"
+            android:textColor="@color/brown"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_dealsType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Premium"
+            android:textColor="@color/brown"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:textSize="10sp"
+            android:textStyle="italic"
+            android:layout_below="@id/txt_dealsTitle"
+            tools:ignore="HardcodedText,SmallSp,TextContrastCheck" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_dealsPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="₱50.00"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginTop="8dp"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:layout_below="@id/txt_dealsType"
+            tools:ignore="HardcodedText,SmallSp,TextContrastCheck" />
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_baseline_favorite_border_24"
+            android:layout_below="@id/txt_dealsType"
+            android:layout_alignParentEnd="true"
+            tools:ignore="ContentDescription" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

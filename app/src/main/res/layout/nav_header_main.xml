@@ -14,6 +14,7 @@
         android:src="@drawable/profile"/>
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/customerName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -24,6 +25,7 @@
         tools:ignore="HardcodedText" />
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/customerEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/white"

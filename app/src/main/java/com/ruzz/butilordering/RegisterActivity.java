@@ -61,6 +61,10 @@ public class RegisterActivity extends AppCompatActivity implements  AdapterView.
             goToLoginActivity();
         });
 
+        binding.floatingActionButton.setOnClickListener(v -> {
+            goToLoginActivity();
+        });
+
         setContentView(view);
 
     }

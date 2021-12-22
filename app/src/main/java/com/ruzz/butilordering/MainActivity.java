@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.ruzz.butilordering.Adapter.CategoryAdapter;
 import com.ruzz.butilordering.Adapter.DealsAdapter;
 import com.ruzz.butilordering.Adapter.OfferAdapter;
@@ -30,8 +31,6 @@ import com.ruzz.butilordering.Model.CategoryModel;
 import com.ruzz.butilordering.Model.DealsModel;
 import com.ruzz.butilordering.Model.OfferModel;
 import com.ruzz.butilordering.Model.SliderModel;
-import com.ruzz.butilordering.ViewModels.DealsViewModel;
-import com.ruzz.butilordering.ViewModels.DealsViewModelFactory;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderView;
 import com.smarteist.autoimageslider.SliderViewAdapter;
@@ -44,12 +43,9 @@ public class MainActivity extends AppCompatActivity {
     ImageView listMode;
     DrawerLayout drawer;
     RecyclerView rvOff,rvCategories,rvDeals;
-    private List<OfferModel> offerModelList=new ArrayList<>();
-    private List<DealsModel> dealsModelList=new ArrayList<>();
-    private DealsViewModel dealsData;
+    private final List<OfferModel> offerModelList=new ArrayList<>();
     SliderView sliderView;
     private FirebaseAuth appAuthentication;
-    private NavigationView nvDrawer;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -58,18 +54,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         listMode=findViewById(R.id.list_Mode);
         drawer=findViewById(R.id.drawer_layout);
-        listMode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                drawer.openDrawer(Gravity.LEFT);
-
-            }
-        });
+        listMode.setOnClickListener(view -> drawer.openDrawer(Gravity.LEFT));
 
         appAuthentication = FirebaseAuth.getInstance();
-        dealsData = new ViewModelProvider(this, new DealsViewModelFactory()).get(DealsViewModel.class);
-        dealsData.setDeals();
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
 
         //RecyclerView for offers starts here
         offerModelList.add(new OfferModel(R.drawable.part1,"P100 Cashback","first order above P500"));
@@ -115,44 +103,36 @@ public class MainActivity extends AppCompatActivity {
         rvCategories.setItemAnimator(new DefaultItemAnimator());
         rvCategories.setAdapter(categoryAdapter);
 
-
-
-        rvDeals=findViewById(R.id.rv_deal);
-        dealsData.getDeals().observe(this, dealsList -> {
-            DealsAdapter dealsAdapter = new DealsAdapter(this, dealsList);
-            rvDeals.setHasFixedSize(true);
-            GridLayoutManager manager1 = new GridLayoutManager(this,1,RecyclerView.VERTICAL, false);
-            rvDeals.setLayoutManager(manager1);
-            rvDeals.setItemAnimator(new DefaultItemAnimator());
-            rvDeals.setAdapter(dealsAdapter);
-        });
-
-        nvDrawer = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView nvDrawer = findViewById(R.id.nav_view);
         setupDrawerContent(nvDrawer);
 
     }
 
     private void setupDrawerContent(NavigationView nvDrawer) {
         nvDrawer.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        selectDrawerItem(menuItem);
-                        return true;
-                    }
+                menuItem -> {
+                    selectDrawerItem(menuItem);
+                    return true;
                 });
 
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
         switch(menuItem.getItemId()) {
-            case R.id.nav2:
+            case R.id.nav_logout:
+                FirebaseAuth.getInstance().signOut();
+                goToLoginActivity();
+                break;
+            case R.id.nav_about:
                 Toast.makeText(MainActivity.this, "Clicked.",
                         Toast.LENGTH_SHORT).show();
                 break;
+            case R.id.nav_help:
+                Toast.makeText(MainActivity.this, "Clicked.",
+                        Toast.LENGTH_SHORT).show();
             default:
-                FirebaseAuth.getInstance().signOut();
-                goToLoginActivity();
+                Toast.makeText(MainActivity.this, "Default.",
+                        Toast.LENGTH_SHORT).show();
         }
     }
 

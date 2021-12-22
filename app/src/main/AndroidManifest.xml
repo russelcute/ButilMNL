@@ -13,39 +13,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ButilOrdering">
-        <activity
-            android:name=".CartActivity"
-            android:exported="false">
-        </activity>
+        <activity android:name=".ProductProfile"></activity>
+        <activity android:name=".HomeActivity" />
         <activity
             android:name=".TrackingActivity"
             android:exported="true"
-            android:screenOrientation="unspecified">
-
-        </activity>
+            android:screenOrientation="unspecified" />
         <activity
             android:name=".MyOrderActivity"
             android:exported="false"
-            android:screenOrientation="unspecified">
-
-        </activity>
+            android:screenOrientation="unspecified" />
         <activity
             android:name=".ResetPasswordActivity"
             android:exported="false"
-            android:screenOrientation="unspecified">
-
-        </activity>
+            android:screenOrientation="unspecified" />
         <activity
             android:name=".RegisterActivity"
             android:exported="false"
-            android:screenOrientation="unspecified">
-
-        </activity>
+            android:screenOrientation="unspecified" />
         <activity
             android:name=".LoginActivity"
-            android:exported="false">
-
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".SplashActivity"
             android:exported="true"
@@ -59,9 +47,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="false"
-            android:screenOrientation="unspecified">
-
-        </activity>
+            android:screenOrientation="unspecified" />
     </application>
 
 </manifest>

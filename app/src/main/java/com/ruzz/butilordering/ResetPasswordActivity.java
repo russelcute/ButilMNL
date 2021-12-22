@@ -26,6 +26,10 @@ public class ResetPasswordActivity extends AppCompatActivity {
         Button submit = binding.btnSendResetLink;
         TextView redirectRegister = binding.redirectRegister;
 
+        binding.floatingActionButton2.setOnClickListener(v -> {
+            gotoLoginActivity();
+        });
+
         submit.setOnClickListener(v -> sendResetPassword());
 
         redirectRegister.setOnClickListener(v -> gotoRegisterActivity());
