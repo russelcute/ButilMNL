@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeFragments.ProductProfileFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="100dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/productProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/txt_dealsDiscountedPercentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/red"
+                android:justificationMode="inter_word"
+                android:paddingHorizontal="10dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:paddingStart="15dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:elevation="3dp"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText,SmallSp,UnusedAttribute,TouchTargetSizeCheck,TextContrastCheck" />
+
+            <ImageView
+                android:id="@+id/rv_dealsImage"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_centerHorizontal="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/fivespcie"
+                tools:ignore="ContentDescription" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txt_dealsTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rv_dealsImage"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="8dp"
+                android:textColor="@color/brown"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txt_dealsType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_dealsTitle"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_alignParentStart="true"
+                android:textColor="@color/brown"
+                android:textSize="14sp"
+                android:textStyle="italic"
+                tools:ignore="HardcodedText,SmallSp,TextContrastCheck" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txt_storageLife"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_dealsTitle"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/brown"
+                android:textSize="14sp"
+                android:textStyle="italic"
+                tools:ignore="HardcodedText,SmallSp,TextContrastCheck" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txt_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_dealsType"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="12dp"
+                android:textSize="14sp"
+                android:textStyle="italic"
+                tools:ignore="HardcodedText,SmallSp,TextContrastCheck" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txt_dealsPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_description"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="12dp"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText,SmallSp,TextContrastCheck" />
+
+            <Button
+                android:id="@+id/btnLike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_dealsPrice"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="3dp"
+                android:text="@string/buttonLike"
+                android:textColor="@color/brown"
+                android:drawableStart="@drawable/ic_baseline_favorite_border_24"
+                android:background="@android:color/transparent"
+
+            />
+
+            <Button
+                android:id="@+id/btnCartAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_dealsPrice"
+                android:layout_toStartOf="@id/btnLike"
+                android:layout_margin="3dp"
+                android:text="@string/btnAddCart"
+                android:textColor="@color/brown"
+                android:drawableStart="@drawable/ic_baseline_add_shopping_cart_24"
+                android:background="@android:color/transparent"
+
+            />
+
+            <Button
+                android:id="@+id/btnCartCheck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_dealsPrice"
+                android:layout_toStartOf="@id/btnLike"
+                android:layout_margin="3dp"
+                android:text="Added"
+                android:textColor="@color/brown"
+                android:drawableStart="@drawable/ic_baseline_check_24"
+                android:background="@android:color/transparent"
+                />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/suggesTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:text="Suggested for you"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/productProfile"
+        tools:ignore="HardcodedText,SmallSp,TextContrastCheck" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_products"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/suggesTitle" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

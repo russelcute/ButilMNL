@@ -26,16 +26,32 @@
     <string name="help">Help</string>
     <string name="notification">Notification</string>
     <string name="profile">Profile</string>
-    <string name="add_to_cart">Add to Cart</string>
+    <string name="add_cart">Add to Cart</string>
     <string name="menu">Menu</string>
     <string name="home">Home</string>
     <string name="order">Order</string>
     <string name="todo">TODO</string>
     <string name="customer">Customer</string>
-    <string name="dummy_text">The almond is the edible kernel of the fruit of the sweet almond tree. It is a bright white fruit wrapped in a reddish brown cover. It is consumed as dry fruit, fried and/or salted. ... It is an oblong drupe with an edible seed or almond of sweet flavour and bright white colour when the reddish brown skin is removed.</string>
+    <string name="dummy_text">The almond is the edible kernel of the fruit of the sweet almond tree. It is a bright white fruit wrapped in a reddish brown cover. It is consumed as dry fruit, fried and/or salted.</string>
     <string name="categories">Categories</string>
     <string-array name="Gender">
         <item>Male</item>
         <item>Female</item>
     </string-array>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="buttonLike">Like</string>
+    <string name="btnAddCart">Add</string>
+    <string name="add_to_cart">My Cart</string>
 </resources>
