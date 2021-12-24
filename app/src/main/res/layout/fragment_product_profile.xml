@@ -117,6 +117,19 @@
                 android:textStyle="bold"
                 tools:ignore="HardcodedText,SmallSp,TextContrastCheck" />
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txt_dealsPromo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_description"
+                android:layout_toEndOf="@id/txt_dealsPrice"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="12dp"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText,SmallSp,TextContrastCheck" />
+
             <Button
                 android:id="@+id/btnLike"
                 android:layout_width="wrap_content"

@@ -126,9 +126,13 @@ public class ProductProfile extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(@NonNull DocumentSnapshot documentSnapshot) {
-                        CartModel userCart = documentSnapshot.toObject(CartModel.class);
-                        productViewModel.setUserCart(userCart);
-                        productViewModel.setHasCart(true);
+                       try {
+                           CartModel userCart = documentSnapshot.toObject(CartModel.class);
+                           productViewModel.setUserCart(userCart);
+                           productViewModel.setHasCart(true);
+                       } catch (NullPointerException e) {
+
+                       }
                     }
                 });
     }
@@ -217,7 +221,7 @@ public class ProductProfile extends AppCompatActivity {
         boolean hasCart = productViewModel.getHasCart();
         ProductModel currProduct = productViewModel.getSelectedProduct().getValue();
 
-        ProductCartModel cartItem = new ProductCartModel(currProduct.getUid(), productViewModel.getQuantity().getValue(), currProduct.getPrice());
+        ProductCartModel cartItem = new ProductCartModel(currProduct.getUid(), productViewModel.getQuantity().getValue(), currProduct.getPrice(), currProduct.getPromo());
         double updatedTotal = productViewModel.getCurrentTotal() + cartItem.getPrice();
 
         if (hasCart) {

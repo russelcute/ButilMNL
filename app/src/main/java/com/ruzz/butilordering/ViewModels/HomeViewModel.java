@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.ruzz.butilordering.Model.CartModel;
+import com.ruzz.butilordering.Model.OrderModel;
 import com.ruzz.butilordering.Model.ProductCartModel;
 import com.ruzz.butilordering.Model.ProductModel;
 import com.ruzz.butilordering.Model.UserModel;
@@ -18,6 +19,7 @@ public class HomeViewModel extends ViewModel {
     private MutableLiveData<ProductModel> selectedProduct = new MutableLiveData<>();
     private MutableLiveData<CartModel> userCart = new MutableLiveData<>();
     private MutableLiveData<ProductCartModel> selectedItem = new MutableLiveData<>();
+    private MutableLiveData<List<OrderModel>> userOrders = new MutableLiveData<>();
     private MutableLiveData<Integer> quantity = new MutableLiveData<>(0);
     private MutableLiveData<String> currentPage = new MutableLiveData<>("Home");
     private MutableLiveData<Double> cartTotalPrice = new MutableLiveData<>();
@@ -111,5 +113,13 @@ public class HomeViewModel extends ViewModel {
 
     public LiveData<Double> getCartTotalPrice() {
         return cartTotalPrice;
+    }
+
+    public void setUserOrders (List<OrderModel> orders) {
+        this.userOrders.setValue(orders);
+    }
+
+    public LiveData<List<OrderModel>> getUserOrders() {
+        return this.userOrders;
     }
 }

@@ -23,7 +23,7 @@ public class ProfileViewModel extends ViewModel {
 
     public void setSelectedProduct(ProductModel product) {
         selectedProduct.setValue(product);
-        if (userCart.getValue() != null) {
+        if (userCart.getValue() != null && userCart.getValue().getItems() != null) {
             List<ProductCartModel> products = new ArrayList<>(userCart.getValue().getItems());
 
             for (ProductCartModel item : products) {
@@ -107,7 +107,7 @@ public class ProfileViewModel extends ViewModel {
 
     public void setUserCart(CartModel cart) {
         userCart.setValue(cart);
-        if (selectedProduct.getValue() != null) {
+        if (selectedProduct.getValue() != null && cart.getItems() != null) {
             List<ProductCartModel> items = new ArrayList<>(cart.getItems());
             for (ProductCartModel item : items) {
                 if (item.getProductId().equals(selectedProduct.getValue().getUid())) {
