@@ -1,10 +1,20 @@
 <resources>
-<!-- Base application theme. -->
-<style name="Theme.ButilOrdering" parent="Theme.AppCompat.Light.NoActionBar">
-    <!-- Primary brand color. -->
-    <item name="colorPrimary">@color/purple_500</item>
-    <item name="colorPrimaryDark">@color/purple_700</item>
-    <item name="colorAccent">@color/teal_200</item>
-    <!-- Customize your theme here. -->
-</style>
+    <!-- Base application theme. -->
+    <style name="Theme.ButilOrdering" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/whitebrown</item>
+        <item name="colorPrimaryDark">@color/whitebrown
+        </item>
+        <item name="colorAccent">@color/brown</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="Theme.ButilOrdering.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.ButilOrdering.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.ButilOrdering.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

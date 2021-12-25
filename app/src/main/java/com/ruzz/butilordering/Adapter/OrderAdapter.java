@@ -41,6 +41,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
             holder.itemBinding.btnLocateOrder.setVisibility(View.VISIBLE);
         }
 
+        if (currentOrder.isPaid()) {
+            holder.itemBinding.txtOrderPaid.setText("paid");
+        } else {
+            holder.itemBinding.txtOrderPaid.setText("unpaid");
+        }
+
         String[] date = currentOrder.getOrderDate().toString().split(" ", 5);
 
         holder.itemBinding.txtOrderDate.setText(date[0] + " " + date[1] + " " + date[2] + " " + date[3]);

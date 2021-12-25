@@ -208,6 +208,7 @@ public class CheckoutActivity extends AppCompatActivity {
             currentUser.setLatitudeLongitude(userLocation.getLatitude(), userLocation.getLongitude());
 
             userOrder.setCustomer(currentUser);
+            userOrder.setUserid(currentUser.getUid());
             userOrder.setPaymentType(paymentType);
             userOrder.setCoordinates(0, 0);
 

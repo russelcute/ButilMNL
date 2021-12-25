@@ -10,8 +10,8 @@ public class OrderModel {
     private Double amountDue;
     private Date orderDate;
     private String paymentType;
-    private boolean canceled = false;
-    private boolean delivered;
+    private String paymentProof;
+    private boolean delivered, assigned;
     private boolean paid;
     private double latitude, longitude;
 
@@ -26,6 +26,10 @@ public class OrderModel {
         }
         this.amountDue = total;
         this.orderDate = new Date();
+        this.paymentProof = "none";
+        this.paid = false;
+        this.delivered = false;
+        this.assigned = false;
     }
 
     public void setPaymentType(String paymentType) {
@@ -38,7 +42,6 @@ public class OrderModel {
 
     public void setCustomer(UserModel customer) {
         this.customer = customer;
-        this.userid = customer.getUid();
     }
 
     public void setUserid(String userid) {
@@ -66,8 +69,20 @@ public class OrderModel {
         return orderDate;
     }
 
-    public boolean isCanceled() {
-        return canceled;
+    public void setPaymentProof(String proof) {
+        this.paymentProof = proof;
+    }
+
+    public void setAssigned(boolean value) {
+        this.assigned = value;
+    }
+
+    public boolean isAssigned() {
+        return assigned;
+    }
+
+    public String getPaymentProof() {
+        return paymentProof;
     }
 
     public String getUserid() {

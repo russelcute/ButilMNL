@@ -74,4 +74,25 @@
     <string name="order_location">Your order location</string>
     <string name="order_location_error">Sorry, the current location of your order is not yet available. Please wait for further updates.</string>
     <string name="error_order_title">Untracked Order</string>
+    <string name="title_activity_deliver">DeliverActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">My Delivery</string>
+    <string name="second_fragment_label">All Delivery</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="delivery_address">Delivery Address</string>
+    <string name="title_activity_delivery_confirm">DeliveryConfirmActivity</string>
+    <string name="customer_name">Customer Name</string>
+    <string name="customer_address">Customer Address</string>
+    <string name="contact_number">Contact Number</string>
+    <string name="set_delivered">Delivered</string>
+    <string name="your_location">Your location</string>
+    <string name="refresh_location">Refresh Location</string>
+    <string name="confirm_location">Confirm Location</string>
+    <string name="cancel">Later</string>
+    <string name="order_location_reminder">Please record your current location to update the customer about the location of their order.</string>
+    <string name="location_reminder_title">Reminder</string>
 </resources>

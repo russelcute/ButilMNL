@@ -32,6 +32,14 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <activity
+            android:name=".DeliveryConfirm.DeliveryConfirmActivity"
+            android:label="@string/title_activity_delivery_confirm"
+            android:theme="@style/Theme.ButilOrdering.NoActionBar" />
+        <activity
+            android:name=".DeliverActivity"
+            android:label="@string/title_activity_deliver"
+            android:theme="@style/Theme.ButilOrdering.NoActionBar" />
         <activity android:name=".PaymentActivity" />
         <activity android:name=".CheckoutActivity" />
         <activity android:name=".ProductProfile" />

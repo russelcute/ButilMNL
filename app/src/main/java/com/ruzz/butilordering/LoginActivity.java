@@ -6,14 +6,22 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.ruzz.butilordering.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
     private FirebaseAuth appAuthentication;
+    private FirebaseFirestore database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
         View view = binding.getRoot();
 
         appAuthentication = FirebaseAuth.getInstance();
+        database = FirebaseFirestore.getInstance();
 
         Button loginButton = binding.loginButton;
         TextView resetPassword = binding.btnForgotPassword;
@@ -49,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseUser currentUser = appAuthentication.getCurrentUser();
 
         if (currentUser != null) {
-            goToHomeActivity();
+            assertUser(currentUser.getUid());
         }
     }
 
@@ -66,12 +75,37 @@ public class LoginActivity extends AppCompatActivity {
         appAuthentication.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        goToHomeActivity();
+                        String uid = task.getResult().getUser().getUid();
+                        assertUser(uid);
                     } else {
                         Toast.makeText(LoginActivity.this, "Email or password is incorrect.",
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void assertUser(String uid) {
+        database.collection("delivery").document(uid)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                goToDeliveryActivity(uid);
+                            } else {
+                                goToHomeActivity();
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void goToDeliveryActivity(String uid) {
+        Intent intent = new Intent(this, DeliverActivity.class);
+        intent.putExtra("User", uid);
+        startActivity(intent);
     }
 
     private void goToHomeActivity() {

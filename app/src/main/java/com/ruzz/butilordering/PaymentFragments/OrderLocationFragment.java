@@ -30,7 +30,7 @@ public class OrderLocationFragment extends Fragment {
             paymentViewModel.getCurrentOrder().observe(requireActivity(), order -> {
                 LatLng sydney = new LatLng(order.getLatitude(), order.getLongitude());
                 googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 17.0f));
             });
         }
     };
