@@ -13,14 +13,18 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,9 +35,12 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.ruzz.butilordering.HomeFragments.CartFragment;
 import com.ruzz.butilordering.HomeFragments.OffersFragment;
+import com.ruzz.butilordering.HomeFragments.OrderFragment;
 import com.ruzz.butilordering.Model.CartModel;
+import com.ruzz.butilordering.Model.OrderModel;
 import com.ruzz.butilordering.Model.ProductCartModel;
 import com.ruzz.butilordering.Model.ProductModel;
 import com.ruzz.butilordering.Model.UserModel;
@@ -42,17 +49,20 @@ import com.ruzz.butilordering.ViewModels.HomeViewModelFactory;
 import com.ruzz.butilordering.databinding.ActivityHomeBinding;
 import com.ruzz.butilordering.databinding.CartBottomSheetBinding;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity {
+    private static final String TAG = "Error";
     private FirebaseAuth appAuth;
     private FirebaseFirestore database;
     private FragmentManager fragmentManager;
     private HomeViewModel homeViewModel;
     private DrawerLayout drawer;
+    private static final DecimalFormat df = new DecimalFormat("0.00");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +86,13 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        Intent intent = getIntent();
+        String pageRequest = intent.getStringExtra("Page");
+
+        if (pageRequest != null) {
+            homeViewModel.setCurrentPage(pageRequest);
+        }
+
         fragmentManager = getSupportFragmentManager();
         NavigationView navigation = binding.navView;
         View headerView = navigation.getHeaderView(0);
@@ -91,26 +108,37 @@ public class HomeActivity extends AppCompatActivity {
 
         homeViewModel.getCartTotalPrice().observe(this, price -> {
             TextView totalPriceView = findViewById(R.id.txt_totalPrice);
-            String priceDisplay = "Total Price:" + " " + "₱" + price;
+            String priceDisplay = "Total Price:" + " " + "₱" + df.format(price);
             totalPriceView.setText(priceDisplay);
         });
 
         homeViewModel.getCurrentPage().observe(this, page -> {
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
             switch (page) {
                 case "Home":
+                    FragmentTransaction transaction = fragmentManager.beginTransaction();
                     transaction.setReorderingAllowed(true);
                     transaction.replace(R.id.fragment_container_view, OffersFragment.class, null);
                     transaction.commit();
                     break;
                 case "Cart":
-                    transaction.setReorderingAllowed(true);
-                    transaction.replace(R.id.fragment_container_view, CartFragment.class, null);
-                    transaction.commit();
+                    FragmentTransaction transaction_1 = fragmentManager.beginTransaction();
+                    transaction_1.setReorderingAllowed(true);
+                    transaction_1.replace(R.id.fragment_container_view, CartFragment.class, null);
+                    transaction_1.commit();
+                    break;
+                case "Orders":
+                    FragmentTransaction transaction_2 = fragmentManager.beginTransaction();
+                    transaction_2.setReorderingAllowed(true);
+                    transaction_2.replace(R.id.fragment_container_view, OrderFragment.class, null);
+                    transaction_2.commit();
+                    break;
                 default:
                     drawer.closeDrawer(GravityCompat.START);
             }
         });
+
+        Button checkOut = findViewById(R.id.buttonCheckout);
+        checkOut.setOnClickListener(v -> goToCheckoutActivity());
 
         setupDrawerContent(navigation);
 
@@ -137,6 +165,10 @@ public class HomeActivity extends AppCompatActivity {
                 break;
             case R.id.nav_cart:
                 homeViewModel.setCurrentPage("Cart");
+                drawer.closeDrawer(GravityCompat.START);
+                break;
+            case R.id.nav_order:
+                homeViewModel.setCurrentPage("Orders");
                 drawer.closeDrawer(GravityCompat.START);
                 break;
             default:
@@ -194,6 +226,22 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 });
 
+        database.collection("orders").whereEqualTo("userid", currentUser.getUid())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        List<OrderModel> userOrders = new ArrayList<>();
+
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            OrderModel order = document.toObject(OrderModel.class);
+                            order.setUserid(document.getId());
+                            userOrders.add(order);
+                        }
+
+                        homeViewModel.setUserOrders(userOrders);
+                    }
+                });
+
         getCartItems(currentUser.getUid());
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -208,9 +256,8 @@ public class HomeActivity extends AppCompatActivity {
     private void getCartItems(String user) {
         database.collection("carts").document(user)
                 .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(@NonNull DocumentSnapshot documentSnapshot) {
+                .addOnSuccessListener(documentSnapshot -> {
+                    try {
                         CartModel userCart = documentSnapshot.toObject(CartModel.class);
                         homeViewModel.setUserCart(userCart);
                         List<ProductCartModel> items = new ArrayList<>(userCart.getItems());
@@ -220,6 +267,8 @@ public class HomeActivity extends AppCompatActivity {
                         }
                         updateTotalPrice(total, user);
                         homeViewModel.setCartTotalPrice(total);
+                    } catch (NullPointerException e) {
+                        Log.d(TAG, e.getMessage());
                     }
                 });
     }
@@ -241,6 +290,20 @@ public class HomeActivity extends AppCompatActivity {
 
     private void goToLoginActivity() {
         Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    private void goToCheckoutActivity() {
+        if (homeViewModel.getUserCart().getValue().getItems() != null) {
+            Intent intent = new Intent(this, CheckoutActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    public void gotoOrderActivity(String productId, String page) {
+        Intent intent = new Intent(this, PaymentActivity.class);
+        intent.putExtra("Page", page);
+        intent.putExtra("Order", productId);
         startActivity(intent);
     }
 
@@ -326,15 +389,16 @@ public class HomeActivity extends AppCompatActivity {
 
     public void updateItemQuantity() {
         ProductCartModel item = homeViewModel.getSelectedItem().getValue();
+        ProductModel product = homeViewModel.getSelectedProduct().getValue();
 
         ProductCartModel oldItem = new ProductCartModel(item.getProductId(), item.getQuantity(),
-                homeViewModel.getSelectedProduct().getValue().getPrice());
+                product.getPrice(), product.getPromo());
 
         database.collection("carts").document(homeViewModel.getCurrentUser().getValue().getUid())
                 .update("items", FieldValue.arrayRemove(oldItem));
 
         ProductCartModel newItem = new ProductCartModel(item.getProductId(), homeViewModel.getQuantity().getValue(),
-                homeViewModel.getSelectedProduct().getValue().getPrice());
+                product.getPrice(), product.getPromo());
 
         database.collection("carts").document(homeViewModel.getCurrentUser().getValue().getUid())
                 .update("items", FieldValue.arrayUnion(newItem));
@@ -343,9 +407,10 @@ public class HomeActivity extends AppCompatActivity {
 
     public void removeItemCart() {
         ProductCartModel item = homeViewModel.getSelectedItem().getValue();
+        ProductModel product = homeViewModel.getSelectedProduct().getValue();
 
         ProductCartModel oldItem = new ProductCartModel(item.getProductId(), item.getQuantity(),
-                homeViewModel.getSelectedProduct().getValue().getPrice());
+                product.getPrice(), product.getPromo());
 
         database.collection("carts").document(homeViewModel.getCurrentUser().getValue().getUid())
                 .update("items", FieldValue.arrayRemove(oldItem));

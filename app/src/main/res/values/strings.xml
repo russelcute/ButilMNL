@@ -29,7 +29,7 @@
     <string name="add_cart">Add to Cart</string>
     <string name="menu">Menu</string>
     <string name="home">Home</string>
-    <string name="order">Order</string>
+    <string name="order">Orders</string>
     <string name="todo">TODO</string>
     <string name="customer">Customer</string>
     <string name="dummy_text">The almond is the edible kernel of the fruit of the sweet almond tree. It is a bright white fruit wrapped in a reddish brown cover. It is consumed as dry fruit, fried and/or salted.</string>
@@ -37,6 +37,10 @@
     <string-array name="Gender">
         <item>Male</item>
         <item>Female</item>
+    </string-array>
+    <string-array name="Payment">
+        <item>Gcash</item>
+        <item>Cash on Delivery</item>
     </string-array>
     <string name="title_activity_home">HomeActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -53,5 +57,42 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="buttonLike">Like</string>
     <string name="btnAddCart">Add</string>
-    <string name="add_to_cart">My Cart</string>
+    <string name="add_to_cart">Cart</string>
+    <string name="placeorder">Placeorder</string>
+    <string name="checkout_order">Checkout Order</string>
+    <string name="your_address">Your address</string>
+    <string name="confirm_address">Confirm Address</string>
+    <string name="refresh_address">Refresh Address</string>
+    <string name="ok">Okay</string>
+    <string name="gps_dialog_message">Please make sure that your GPS is turned on and your device is not on Aeroplane Mode then click the Refresh button.</string>
+    <string name="gps_dialog_title">Failed to detect location</string>
+    <string name="order_error_message">Please fill up all necessary information. Thank you!</string>
+    <string name="order_error_title">Incomplete information</string>
+    <string name="order_submit_error_title">Failed to place order</string>
+    <string name="order_error_submit">Please make sure that you have a stable internet connection or restart the app. Sorry for the inconvenience.</string>
+    <string name="pay_order">Pay Order</string>
+    <string name="order_location">Your order location</string>
+    <string name="order_location_error">Sorry, the current location of your order is not yet available. Please wait for further updates.</string>
+    <string name="error_order_title">Untracked Order</string>
+    <string name="title_activity_deliver">DeliverActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">My Delivery</string>
+    <string name="second_fragment_label">All Delivery</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="delivery_address">Delivery Address</string>
+    <string name="title_activity_delivery_confirm">DeliveryConfirmActivity</string>
+    <string name="customer_name">Customer Name</string>
+    <string name="customer_address">Customer Address</string>
+    <string name="contact_number">Contact Number</string>
+    <string name="set_delivered">Delivered</string>
+    <string name="your_location">Your location</string>
+    <string name="refresh_location">Refresh Location</string>
+    <string name="confirm_location">Confirm Location</string>
+    <string name="cancel">Later</string>
+    <string name="order_location_reminder">Please record your current location to update the customer about the location of their order.</string>
+    <string name="location_reminder_title">Reminder</string>
 </resources>

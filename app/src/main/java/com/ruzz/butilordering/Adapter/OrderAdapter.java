@@ -1,67 +1,81 @@
 package com.ruzz.butilordering.Adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.ruzz.butilordering.Model.DealsModel;
 import com.ruzz.butilordering.Model.OrderModel;
-import com.ruzz.butilordering.R;
+import com.ruzz.butilordering.databinding.ItemOrderBinding;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
-public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.viewHolder> {
-    private Context ctx;
-    private List<OrderModel> orderModelList;
+public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> {
+    private List<OrderModel> userOrders;
+    private OrderSelected listener;
+    private static final DecimalFormat df = new DecimalFormat("0.00");
 
-    public OrderAdapter(Context ctx, List<OrderModel> orderModelList) {
-        this.ctx = ctx;
-        this.orderModelList = orderModelList;
+    public OrderAdapter (OrderSelected listener, List<OrderModel> orders) {
+        this.userOrders = orders;
+        this.listener = listener;
     }
 
     @NonNull
     @Override
-    public OrderAdapter.viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(ctx).inflate(R.layout.item_my_orders,parent, false);
-        return new OrderAdapter.viewHolder(view);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new OrderAdapter.ViewHolder(ItemOrderBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull OrderAdapter.viewHolder holder, int position) {
-        final OrderModel orderModel=orderModelList.get(position);
-        //0 from order, 1 for delivered, 2 for cancelled
-        if (orderModel.getOrderStatus().equals("0")) {
-            holder.orderStatus.setText("Order on "+orderModel.getStatusDate());
-        }else if (orderModel.getOrderStatus().equals("1")) {
-            holder.orderStatus.setText("Delivered on "+orderModel.getStatusDate());
-        }else if (orderModel.getOrderStatus().equals("2")) {
-            holder.orderStatus.setText("Cancelled on "+orderModel.getStatusDate());
-        }
-        holder.orderBrand.setText(orderModel.getOrderBrand());
-        Glide.with(ctx).load(orderModel.getImage()).into(holder.orderImage);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        OrderModel currentOrder = userOrders.get(position);
 
+        if (currentOrder.isDelivered()) {
+            holder.itemBinding.imgCheck.setVisibility(View.VISIBLE);
+            holder.itemBinding.btnLocateOrder.setVisibility(View.GONE);
+        } else {
+            holder.itemBinding.imgCheck.setVisibility(View.GONE);
+            holder.itemBinding.btnLocateOrder.setVisibility(View.VISIBLE);
+        }
+
+        if (currentOrder.isPaid()) {
+            holder.itemBinding.txtOrderPaid.setText("paid");
+        } else {
+            holder.itemBinding.txtOrderPaid.setText("unpaid");
+        }
+
+        String[] date = currentOrder.getOrderDate().toString().split(" ", 5);
+
+        holder.itemBinding.txtOrderDate.setText(date[0] + " " + date[1] + " " + date[2] + " " + date[3]);
+        holder.itemBinding.txtOrderId.setText(currentOrder.getUserid());
+        String price = "₱" + df.format(currentOrder.getAmountDue());
+        holder.itemBinding.txtAmountDue.setText(price);
+
+        holder.itemBinding.circleImageView2.setOnClickListener(v -> {
+            listener.selectedOrder(currentOrder.getUserid(), "OrderInfo");
+        });
+
+        holder.itemBinding.btnLocateOrder.setOnClickListener(v -> {
+            if (currentOrder.getLatitude() != 0 && currentOrder.getLongitude() != 0) {
+                listener.selectedOrder(currentOrder.getUserid(), "OrderLocation");
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return orderModelList.size();
+        return this.userOrders.size();
     }
 
-    public class viewHolder extends RecyclerView.ViewHolder {
-        private ImageView orderImage;
-        private TextView orderStatus,orderBrand;
-        public viewHolder(@NonNull View itemView) {
-            super(itemView);
-            orderImage = itemView.findViewById(R.id.iv_orderImage);
-            orderStatus = itemView.findViewById(R.id.iv_orderStatus);
-            orderBrand = itemView.findViewById(R.id.iv_orderBrand);
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        ItemOrderBinding itemBinding;
+
+        public ViewHolder(ItemOrderBinding view) {
+            super(view.getRoot());
+            itemBinding = view;
         }
     }
 }

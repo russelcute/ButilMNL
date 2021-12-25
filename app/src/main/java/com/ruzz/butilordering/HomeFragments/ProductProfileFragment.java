@@ -1,5 +1,6 @@
 package com.ruzz.butilordering.HomeFragments;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ruzz.butilordering.Adapter.ProductSelected;
@@ -24,12 +26,14 @@ import com.ruzz.butilordering.ViewModels.ProfileViewModelFactory;
 import com.ruzz.butilordering.databinding.FragmentProductProfileBinding;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProductProfileFragment extends Fragment implements ProductSelected {
     private FragmentProductProfileBinding binding;
     private ProfileViewModel productViewModel;
+    private static final DecimalFormat df = new DecimalFormat("0.00");
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,10 +57,30 @@ public class ProductProfileFragment extends Fragment implements ProductSelected 
 
        productViewModel.getSelectedProduct().observe(requireActivity(), product -> {
             if (product != null) {
-                binding.txtDealsTitle.setText(product.getName());
-                String price = "₱" + product.getPrice();
-                binding.txtDealsPrice.setText(price);
-                binding.txtDealsType.setText(product.getType());
+                String title = product.getName() + " " + "(" + (int) product.getContent() + "g" + ")";
+                binding.txtDealsTitle.setText(title);
+
+                String price = "₱" + df.format(product.getPrice());
+                if (product.getPromo() > 1) {
+                    double discountedPrice = product.getPrice() - (product.getPrice() * (product.getPromo() / 100));
+                    String priceDiscount = "₱" + df.format(discountedPrice);
+                    TextView priceView = binding.txtDealsPrice;
+                    priceView.setText(price);
+                    priceView.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                    binding.txtDealsPromo.setVisibility(View.VISIBLE);
+                    binding.txtDealsPromo.setText(priceDiscount);
+                } else {
+                    binding.txtDealsPromo.setVisibility(View.GONE);
+                    binding.txtDealsPrice.setText(price);
+                }
+
+                if (product.getType() != null && !product.getType().equals("Standard")) {
+                    String type = product.getType() + " " + product.getCategoryId();
+                    binding.txtDealsType.setText(type);
+                } else {
+                    binding.txtDealsType.setText(product.getCategoryId());
+                }
+
                 binding.txtDescription.setText(product.getDescription());
                 String storage = (int) product.getStorageLife() + " days storage life";
                 binding.txtStorageLife.setText(storage);
