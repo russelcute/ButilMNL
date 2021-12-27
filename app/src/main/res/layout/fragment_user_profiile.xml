@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:gravity="center"
+        android:background="@color/brown"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:padding="20dp" >
+
+        <ImageView
+            android:id="@+id/Profile"
+            android:layout_width="259dp"
+            android:layout_height="190dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/logosplash" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginTop="20dp"
+            android:elevation="3dp"
+            app:cardCornerRadius="5dp">
+
+            <TextView
+                android:id="@+id/customerName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:drawableStart="@drawable/ic_baseline_person_24"
+                android:drawablePadding="10dp"
+                android:drawableTint="@color/brown"
+                android:padding="10dp"
+                android:text="Russel"
+                android:textColor="@color/brown"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:ignore="Autofill,TextContrastCheck,TouchTargetSizeCheck" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginTop="10dp"
+            android:elevation="3dp"
+            app:cardCornerRadius="5dp">
+
+            <EditText
+                android:id="@+id/customerEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:drawableStart="@drawable/ic_baseline_email_24"
+                android:drawablePadding="10dp"
+                android:padding="10dp"
+                android:text="russelrdelosangeles@gmail.com"
+                android:textColor="@color/brown"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                tools:ignore="Autofill,TextContrastCheck,TouchTargetSizeCheck" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginTop="10dp"
+            android:elevation="3dp"
+            app:cardCornerRadius="5dp">
+
+            <EditText
+                android:id="@+id/contactNUmber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:drawableStart="@drawable/ic_baseline_call_24"
+                android:drawablePadding="10dp"
+                android:drawableTint="@color/brown"
+                android:hint="@string/mobile_number"
+                android:padding="10dp"
+                android:text="Number"
+                android:textColor="@color/brown"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                tools:ignore="Autofill,TextContrastCheck,TouchTargetSizeCheck" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginTop="10dp"
+            android:elevation="3dp"
+            app:cardCornerRadius="5dp">
+
+            <EditText
+                android:id="@+id/gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:drawableStart="@drawable/ic_baseline_female_24"
+                android:drawablePadding="10dp"
+                android:drawableTint="@color/brown"
+                android:hint="@string/mobile_number"
+                android:padding="10dp"
+                android:text="Gender"
+                android:textColor="@color/brown"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                tools:ignore="Autofill,TextContrastCheck,TouchTargetSizeCheck" />
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+</LinearLayout>

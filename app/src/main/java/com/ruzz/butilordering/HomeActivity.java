@@ -39,6 +39,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.ruzz.butilordering.HomeFragments.CartFragment;
 import com.ruzz.butilordering.HomeFragments.OffersFragment;
 import com.ruzz.butilordering.HomeFragments.OrderFragment;
+import com.ruzz.butilordering.HomeFragments.UserProfiileFragment;
 import com.ruzz.butilordering.Model.AccountModel;
 import com.ruzz.butilordering.Model.CartModel;
 import com.ruzz.butilordering.Model.OrderModel;
@@ -133,6 +134,12 @@ public class HomeActivity extends AppCompatActivity {
                     transaction_2.replace(R.id.fragment_container_view, OrderFragment.class, null);
                     transaction_2.commit();
                     break;
+                case "Profile":
+                    FragmentTransaction transaction_3 = fragmentManager.beginTransaction();
+                    transaction_3.setReorderingAllowed(true);
+                    transaction_3.replace(R.id.fragment_container_view, UserProfiileFragment.class, null);
+                    transaction_3.commit();
+                    break;
                 default:
                     drawer.closeDrawer(GravityCompat.START);
             }
@@ -172,6 +179,10 @@ public class HomeActivity extends AppCompatActivity {
                 homeViewModel.setCurrentPage("Orders");
                 drawer.closeDrawer(GravityCompat.START);
                 break;
+            case R.id.nav_profile:
+                homeViewModel.setCurrentPage("Profile");
+                drawer.closeDrawer(GravityCompat.START);
+                break;
             default:
                 Toast.makeText(HomeActivity.this, "Not assigned yet.",
                         Toast.LENGTH_SHORT).show();
@@ -195,7 +206,9 @@ public class HomeActivity extends AppCompatActivity {
                 if (result.exists()) {
                     String username = result.getString("firstName") + " " + result.getString("lastName");
                     String gender = result.getString("gender");
+                    String contact = result.getString("contact");
                     UserModel user = new UserModel(currentUser.getUid(), username, gender, currentUser.getEmail());
+                    user.setContact(contact);
 
                     homeViewModel.setCurrentUser(user);
                 } else {
