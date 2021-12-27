@@ -13,6 +13,7 @@ import java.util.List;
 
 public class ProfileViewModel extends ViewModel {
     private MutableLiveData<ProductModel> selectedProduct = new MutableLiveData<>();
+    private MutableLiveData<List<String>> likedProducts = new MutableLiveData<>();
     private MutableLiveData<List<ProductModel>> featuredProducts = new MutableLiveData<>();
     private MutableLiveData<ProductCartModel> currentItem = new MutableLiveData<>();
     private MutableLiveData<CartModel> userCart = new MutableLiveData<>();
@@ -20,6 +21,8 @@ public class ProfileViewModel extends ViewModel {
     private Boolean hasCart = false;
     private double currentTotal = 0;
     private MutableLiveData<Integer> quantity = new MutableLiveData<>(1);
+    private MutableLiveData<Boolean> addedToCart = new MutableLiveData<>(false);
+    private MutableLiveData<Boolean> likedProduct = new MutableLiveData<>(false);
 
     public void setSelectedProduct(ProductModel product) {
         selectedProduct.setValue(product);
@@ -29,6 +32,7 @@ public class ProfileViewModel extends ViewModel {
             for (ProductCartModel item : products) {
                 if (item.getProductId().equals(product.getUid())) {
                     currentItem.setValue(item);
+                    addedToCart.setValue(true);
                 }
             }
         }
@@ -112,6 +116,7 @@ public class ProfileViewModel extends ViewModel {
             for (ProductCartModel item : items) {
                 if (item.getProductId().equals(selectedProduct.getValue().getUid())) {
                     currentItem.setValue(item);
+                    addedToCart.setValue(true);
                 }
             }
         }
@@ -119,5 +124,29 @@ public class ProfileViewModel extends ViewModel {
 
     public LiveData<CartModel> getUserCart() {
         return userCart;
+    }
+
+    public void setAddedToCart(boolean value) {
+        this.addedToCart.setValue(value);
+    }
+
+    public LiveData<Boolean> getAddedToCart() {
+        return addedToCart;
+    }
+
+    public void setLikedProduct(boolean value) {
+        this.likedProduct.setValue(value);
+    }
+
+    public LiveData<Boolean> getLikedProduct() {
+        return likedProduct;
+    }
+
+    public void setLikedProducts(List<String> liked) {
+        likedProducts.setValue(liked);
+    }
+
+    public LiveData<List<String>> getLikedProducts() {
+        return likedProducts;
     }
 }

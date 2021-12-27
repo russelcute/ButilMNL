@@ -145,6 +145,18 @@
             />
 
             <Button
+                android:id="@+id/btn_liked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_dealsPrice"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="3dp"
+                android:text="@string/button_liked"
+                android:textColor="@color/brown"
+                android:drawableStart="@drawable/ic_baseline_favorite_24"
+                android:background="@android:color/transparent" />
+
+            <Button
                 android:id="@+id/btnCartAdd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -1,5 +1,6 @@
 package com.ruzz.butilordering;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
@@ -7,9 +8,12 @@ import androidx.lifecycle.ViewModelProvider;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -29,6 +33,8 @@ import com.ruzz.butilordering.Model.UserModel;
 import com.ruzz.butilordering.ViewModels.CheckoutViewModel;
 import com.ruzz.butilordering.ViewModels.CheckoutViewModelFactory;
 import com.ruzz.butilordering.databinding.ActivityCheckoutBinding;
+import com.ruzz.butilordering.databinding.DeliveryPaymentDialogBinding;
+import com.ruzz.butilordering.databinding.GcashPaymentDialogBinding;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -212,21 +218,81 @@ public class CheckoutActivity extends AppCompatActivity {
             userOrder.setPaymentType(paymentType);
             userOrder.setCoordinates(0, 0);
 
-            database.collection("orders")
-                    .add(userOrder)
-                    .addOnFailureListener(e -> showErrorDialog(R.string.order_error_submit, R.string.order_submit_error_title));
+            if (paymentType.equals("Gcash")) {
+                showBottomSheetDialog(userOrder, currentUser);
+            } else {
+                database.collection("orders")
+                        .add(userOrder)
+                        .addOnFailureListener(e -> showErrorDialog(R.string.order_error_submit, R.string.order_submit_error_title));
 
-            database.collection("carts").document(currentUser.getUid())
-                    .update("items", FieldValue.delete());
+                database.collection("carts").document(currentUser.getUid())
+                        .update("items", FieldValue.delete());
 
-            database.collection("carts").document(currentUser.getUid())
-                    .update("totalPrice", 0);
+                database.collection("carts").document(currentUser.getUid())
+                        .update("totalPrice", 0);
 
-            gotoCartPage();
+                gotoCartPage();
+            }
 
         } else {
             showErrorDialog(R.string.order_error_message, R.string.order_error_title);
         }
+    }
+
+    private void showBottomSheetDialog(OrderModel order, UserModel currentUser) {
+        GcashPaymentDialogBinding paymentDialog = GcashPaymentDialogBinding.inflate(getLayoutInflater());
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialog.setContentView(paymentDialog.getRoot());
+
+        paymentDialog.buttonSubmitPayment.setOnClickListener(v -> {
+            String GcashAccount = paymentDialog.textPayment.getText().toString();
+            String GcashReference = paymentDialog.textChange.getText().toString();
+
+            if (!TextUtils.isEmpty(GcashAccount) && !TextUtils.isEmpty(GcashReference)) {
+                try {
+                    Long.parseLong(GcashAccount);
+                    Long.parseLong(GcashReference);
+
+                    database.collection("orders")
+                            .add(order)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(@NonNull DocumentReference documentReference) {
+                                    String uid = documentReference.getId();
+                                    savePayment(uid, GcashReference, currentUser.getUid(), GcashAccount);
+                                }
+                            })
+                            .addOnFailureListener(e -> showErrorDialog(R.string.order_error_submit, R.string.order_submit_error_title));
+
+                } catch (NumberFormatException e) {
+                    showErrorDialog(R.string.gcash_error, R.string.gcash_error_title);
+                }
+            } else {
+                showErrorDialog(R.string.gcash_error, R.string.gcash_error_title);
+            }
+        });
+
+        bottomSheetDialog.show();
+
+    }
+
+    private void savePayment(String uid, String reference, String userId, String gcashNumber) {
+        database.collection("orders").document(uid)
+                .update("paid", true);
+
+        database.collection("orders").document(uid)
+                .update("paymentProof", reference);
+
+        database.collection("carts").document(userId)
+                .update("items", FieldValue.delete());
+
+        database.collection("carts").document(userId)
+                .update("totalPrice", 0);
+
+        database.collection("accounts").document(userId)
+                .update("GcashAccount", gcashNumber);
+
+        gotoCartPage();
     }
 
     private void showErrorDialog(int message, int title) {

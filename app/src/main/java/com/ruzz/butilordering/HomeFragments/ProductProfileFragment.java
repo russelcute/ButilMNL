@@ -96,7 +96,6 @@ public class ProductProfileFragment extends Fragment implements ProductSelected 
                 binding.btnCartCheck.setVisibility(View.GONE);
             }
         });
-
         productViewModel.getCurrentItem().observe(requireActivity(), item -> {
             if (item != null) {
                 binding.btnCartAdd.setVisibility(View.GONE);
@@ -109,7 +108,11 @@ public class ProductProfileFragment extends Fragment implements ProductSelected 
 
         productViewModel.getFeaturedProducts().observe(requireActivity(), products -> {
             if (products != null) {
-                ProductsAdapter productsAdapter = new ProductsAdapter(this, products);
+                List<String> liked = new ArrayList<>();
+                if (productViewModel.getLikedProducts().getValue() != null) {
+                    liked = productViewModel.getLikedProducts().getValue();
+                }
+                ProductsAdapter productsAdapter = new ProductsAdapter(this, products, liked);
                 productsView.setAdapter(productsAdapter);
             }
         });
@@ -119,12 +122,44 @@ public class ProductProfileFragment extends Fragment implements ProductSelected 
             ((ProductProfile)getActivity()).showButtomSheetDialog();
         });
 
+        binding.btnLike.setOnClickListener(v -> {
+            ((ProductProfile)getActivity()).addLikedProducts();
+        });
+
+        binding.btnLiked.setOnClickListener(v -> {
+            ((ProductProfile)getActivity()).removeLikedProduct();
+        });
+
+        productViewModel.getAddedToCart().observe(requireActivity(), added -> {
+            if (added) {
+                binding.btnCartAdd.setVisibility(View.GONE);
+                binding.btnCartCheck.setVisibility(View.VISIBLE);
+            } else {
+                binding.btnCartAdd.setVisibility(View.VISIBLE);
+                binding.btnCartCheck.setVisibility(View.GONE);
+            }
+        });
+
+        productViewModel.getLikedProduct().observe(requireActivity(), liked -> {
+            if (liked) {
+                binding.btnLike.setVisibility(View.INVISIBLE);
+                binding.btnLiked.setVisibility((View.VISIBLE));
+            }
+        });
+
+        productViewModel.getLikedProduct().observe(requireActivity(), liked -> {
+            if (!liked) {
+                binding.btnLike.setVisibility(View.VISIBLE);
+                binding.btnLiked.setVisibility((View.INVISIBLE));
+            }
+        });
     }
 
     @Override
-    public void setSelected(int pos, String uid) {
+    public void setSelected(int pos, String uid, boolean liked) {
         productViewModel.setSelectedFeatured(pos);
         productViewModel.resetQuantity();
+        productViewModel.setLikedProduct(liked);
         ((ProductProfile)getActivity()).gotoProductProfile();
     }
 }

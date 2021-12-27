@@ -54,7 +54,11 @@ public class OffersFragment extends Fragment implements ProductSelected {
 
         homeViewModel.getProductList().observe(requireActivity(), products -> {
             if (products != null) {
-                ProductsAdapter productsAdapter = new ProductsAdapter(this, products);
+                List<String> liked = new ArrayList<>();
+                if (homeViewModel.getLikedProducts().getValue() != null) {
+                    liked = homeViewModel.getLikedProducts().getValue();
+                }
+                ProductsAdapter productsAdapter = new ProductsAdapter(this, products, liked);
                 productsView.setAdapter(productsAdapter);
             }
         });
@@ -62,7 +66,7 @@ public class OffersFragment extends Fragment implements ProductSelected {
     }
 
     @Override
-    public void setSelected(int pos, String uid) {
+    public void setSelected(int pos, String uid, boolean liked) {
         homeViewModel.setSelectedProduct(pos);
         ((HomeActivity)getActivity()).gotoProductProfile();
     }

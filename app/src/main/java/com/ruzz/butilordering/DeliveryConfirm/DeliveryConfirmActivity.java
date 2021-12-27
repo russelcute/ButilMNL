@@ -320,6 +320,9 @@ public class DeliveryConfirmActivity extends AppCompatActivity {
                 database.collection("orders").document(order.getUserid())
                         .update("paid", true);
 
+                database.collection("orders").document(order.getUserid())
+                        .update("paymentProof", deliverConfirmViewModel.getCurrentUser().getValue().getUid());
+
                 DeliveryPersonnel personnel = deliverConfirmViewModel.getDeliveryPersonnel().getValue();
 
                 database.collection("delivery").document(deliverConfirmViewModel.getCurrentUser().getValue().getUid())
