@@ -116,6 +116,11 @@ public class PaymentActivity extends AppCompatActivity {
         binding.ibOrderCancel.setOnClickListener(v -> {
             deleteOrder(orderId);
         });
+
+        binding.buttonPayOrder.setOnClickListener(v -> {
+            setReceived(orderId);
+        });
+
     }
 
     @Override
@@ -164,7 +169,19 @@ public class PaymentActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                 }
             }
+
+            if (order.isDelivered()) {
+                binding.buttonPayOrder.setEnabled(false);
+            } else {
+                binding.buttonPayOrder.setEnabled(true);
+            }
+
         });
+    }
+
+    private void setReceived(String uid) {
+        database.collection("orders").document(uid)
+                .update("delivered", true);
     }
 
     private void deleteOrder(String id) {

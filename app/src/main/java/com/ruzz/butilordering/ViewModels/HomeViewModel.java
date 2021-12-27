@@ -23,6 +23,7 @@ public class HomeViewModel extends ViewModel {
     private MutableLiveData<Integer> quantity = new MutableLiveData<>(0);
     private MutableLiveData<String> currentPage = new MutableLiveData<>("Home");
     private MutableLiveData<Double> cartTotalPrice = new MutableLiveData<>();
+    private MutableLiveData<List<String>> likedProducts = new MutableLiveData<>();
 
     public HomeViewModel() {
         UserModel user = new UserModel("Loading...", "Loading...", "Loading...", "Loading...");
@@ -121,5 +122,13 @@ public class HomeViewModel extends ViewModel {
 
     public LiveData<List<OrderModel>> getUserOrders() {
         return this.userOrders;
+    }
+
+    public void setLikedProducts(List<String> liked) {
+        likedProducts.setValue(liked);
+    }
+
+    public LiveData<List<String>> getLikedProducts() {
+        return likedProducts;
     }
 }

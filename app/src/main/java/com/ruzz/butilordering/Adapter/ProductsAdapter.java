@@ -22,11 +22,13 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
 
     private List<ProductModel> productList;
     private ProductSelected listener;
+    private List<String> likedProducts;
     private static final DecimalFormat df = new DecimalFormat("0.00");
 
-    public ProductsAdapter(ProductSelected listener, List<ProductModel> products) {
+    public ProductsAdapter(ProductSelected listener, List<ProductModel> products, List<String> liked) {
         this.productList = products;
         this.listener = listener;
+        this.likedProducts = liked;
     }
 
     @NonNull
@@ -38,6 +40,13 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ProductsAdapter.ViewHolder holder, int position) {
         ProductModel currentProduct = productList.get(position);
+        boolean liked = false;
+
+        for (String product : likedProducts) {
+            if (product.equals(currentProduct.getUid())) {
+                liked = true;
+            }
+        }
 
         String title = currentProduct.getName() + " " + "(" + (int) currentProduct.getContent() + "g" + ")";
         holder.itemBinding.txtDealsTitle.setText(title);
@@ -72,9 +81,16 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
             holder.itemBinding.txtDealsDiscountedPercentage.setText(promo);
         }
 
-        holder.itemBinding.rvDealsImage.setOnClickListener(v -> listener.setSelected(position, currentProduct.getUid()));
 
-        holder.itemBinding.txtDealsTitle.setOnClickListener(v -> listener.setSelected(position, currentProduct.getUid()));
+        holder.itemBinding.imgLike.setVisibility(liked ? View.GONE : View.VISIBLE);
+        holder.itemBinding.imgFavorite.setVisibility(liked ? View.VISIBLE : View.GONE);
+
+
+        boolean finalLiked = liked;
+        holder.itemBinding.rvDealsImage.setOnClickListener(v -> listener.setSelected(position, currentProduct.getUid(), finalLiked));
+
+        boolean finalLiked1 = liked;
+        holder.itemBinding.txtDealsTitle.setOnClickListener(v -> listener.setSelected(position, currentProduct.getUid(), finalLiked1));
 
     }
 

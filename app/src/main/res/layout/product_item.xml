@@ -97,11 +97,23 @@
             tools:ignore="HardcodedText,SmallSp,TextContrastCheck" />
 
         <ImageView
+            android:id="@+id/img_like"
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="10dp"
             android:src="@drawable/ic_baseline_favorite_border_24"
+            android:layout_below="@id/txt_dealsType"
+            android:layout_alignParentEnd="true"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/img_favorite"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_baseline_favorite_24"
             android:layout_below="@id/txt_dealsType"
             android:layout_alignParentEnd="true"
             tools:ignore="ContentDescription" />

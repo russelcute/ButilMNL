@@ -23,6 +23,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.ruzz.butilordering.HomeFragments.ProductProfileFragment;
+import com.ruzz.butilordering.Model.AccountModel;
 import com.ruzz.butilordering.Model.CartModel;
 import com.ruzz.butilordering.Model.ProductCartModel;
 import com.ruzz.butilordering.Model.ProductModel;
@@ -76,6 +77,7 @@ public class ProductProfile extends AppCompatActivity {
             if (product != null) {
                 setFeaturedProducts(product);
                 binding.txtAppbarTitle.setText(product.getName());
+                getUserLikedProducts(productViewModel.getUserId(), product.getUid());
             }
         });
 
@@ -131,12 +133,50 @@ public class ProductProfile extends AppCompatActivity {
                            productViewModel.setUserCart(userCart);
                            productViewModel.setHasCart(true);
                        } catch (NullPointerException e) {
-
+                           Toast.makeText(ProductProfile.this, e.getMessage(),
+                                   Toast.LENGTH_SHORT).show();
                        }
                     }
                 });
     }
 
+    private void getUserLikedProducts(String uid, String productId) {
+        database.collection("accounts").document(uid)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(@NonNull DocumentSnapshot documentSnapshot) {
+                        AccountModel account = documentSnapshot.toObject(AccountModel.class);
+
+                        if (account != null) {
+                            productViewModel.setLikedProducts(account.getLiked());
+
+                            for (String product : account.getLiked()) {
+                                if (product.equals(productId)) {
+                                    productViewModel.setLikedProduct(true);
+                                }
+                            }
+                        } else {
+                            Toast.makeText(ProductProfile.this, "Failed to fetch liked.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    public void addLikedProducts() {
+        database.collection("accounts").document(productViewModel.getUserId())
+                .update("liked", FieldValue.arrayUnion(productViewModel.getSelectedProduct().getValue().getUid()));
+
+        productViewModel.setLikedProduct(true);
+    }
+
+    public void removeLikedProduct() {
+        database.collection("accounts").document(productViewModel.getUserId())
+                .update("liked", FieldValue.arrayRemove(productViewModel.getSelectedProduct().getValue().getUid()));
+
+        productViewModel.setLikedProduct(false);
+    }
 
     public void gotoProductProfile() {
         productViewModel.resetQuantity();
@@ -239,6 +279,7 @@ public class ProductProfile extends AppCompatActivity {
 
         }
         productViewModel.setCurrentTotal(updatedTotal);
+        productViewModel.setAddedToCart(true);
     }
 
 }

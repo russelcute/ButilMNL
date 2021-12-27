@@ -39,6 +39,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.ruzz.butilordering.HomeFragments.CartFragment;
 import com.ruzz.butilordering.HomeFragments.OffersFragment;
 import com.ruzz.butilordering.HomeFragments.OrderFragment;
+import com.ruzz.butilordering.Model.AccountModel;
 import com.ruzz.butilordering.Model.CartModel;
 import com.ruzz.butilordering.Model.OrderModel;
 import com.ruzz.butilordering.Model.ProductCartModel;
@@ -207,6 +208,8 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        getUserLikedProducts(currentUser.getUid());
+
         database.collection("products").orderBy("promo", Query.Direction.DESCENDING).get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -269,6 +272,23 @@ public class HomeActivity extends AppCompatActivity {
                         homeViewModel.setCartTotalPrice(total);
                     } catch (NullPointerException e) {
                         Log.d(TAG, e.getMessage());
+                    }
+                });
+    }
+
+    private void getUserLikedProducts(String uid) {
+        database.collection("accounts").document(uid)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(@NonNull DocumentSnapshot documentSnapshot) {
+                        AccountModel account = documentSnapshot.toObject(AccountModel.class);
+                        if (account != null) {
+                            homeViewModel.setLikedProducts(account.getLiked());
+                        } else {
+                            Toast.makeText(HomeActivity.this, "Failed to fetch liked.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
     }

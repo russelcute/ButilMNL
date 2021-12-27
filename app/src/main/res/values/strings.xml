@@ -70,7 +70,7 @@
     <string name="order_error_title">Incomplete information</string>
     <string name="order_submit_error_title">Failed to place order</string>
     <string name="order_error_submit">Please make sure that you have a stable internet connection or restart the app. Sorry for the inconvenience.</string>
-    <string name="pay_order">Pay Order</string>
+    <string name="pay_order">Received</string>
     <string name="order_location">Your order location</string>
     <string name="order_location_error">Sorry, the current location of your order is not yet available. Please wait for further updates.</string>
     <string name="error_order_title">Untracked Order</string>
@@ -95,4 +95,16 @@
     <string name="cancel">Later</string>
     <string name="order_location_reminder">Please record your current location to update the customer about the location of their order.</string>
     <string name="location_reminder_title">Reminder</string>
+    <string name="cash_description">This order is Cash on Delivery payment type. Please confirm that you receive the right amount due. Thank you!</string>
+    <string name="payment_amount">Payment Amount</string>
+    <string name="change_cash">Change</string>
+    <string name="confirm_payment">Confirm</string>
+    <string name="gcash_description">Send your payment on the Gcash number below and fill the necessary information below so we can confirm your Gcash payment. Thank you!</string>
+    <string name="gcash_account_number">Gcash Account Number</string>
+    <string name="gcash_accounbt_hint">0917*******</string>
+    <string name="gcash_reference_number">Gcash Reference Number</string>
+    <string name="gcash_re4ference_hint">9295*****</string>
+    <string name="gcash_error">Gcash account number and the transaction Reference Number is required to place your order.</string>
+    <string name="gcash_error_title">Invalid Account and Reference Number</string>
+    <string name="button_liked">Liked</string>
 </resources>
