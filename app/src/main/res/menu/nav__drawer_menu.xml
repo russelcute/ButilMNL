@@ -29,11 +29,6 @@
             android:title="@string/profile"/>
         <item
             android:textColor="@color/brown"
-            android:id="@+id/nav_notification"
-            android:icon="@drawable/ic_baseline_notifications_24"
-            android:title="@string/notification"/>
-        <item
-            android:textColor="@color/brown"
             android:id="@+id/nav_help"
             android:icon="@drawable/ic_baseline_campaign_24"
             android:title="@string/help"/>
@@ -50,11 +45,6 @@
     </group>
 
     <group android:id="@+id/nav2">
-        <item
-            android:textColor="@color/brown"
-            android:id="@+id/nav_rate"
-            android:icon="@drawable/ic_baseline_thumb_up_24"
-            android:title="@string/rate_app"/>
         <item
             android:textColor="@color/brown"
             android:id="@+id/nav_logout"

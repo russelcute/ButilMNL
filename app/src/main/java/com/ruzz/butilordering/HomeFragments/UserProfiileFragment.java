@@ -51,5 +51,12 @@ public class UserProfiileFragment extends Fragment {
                 binding.gender.setText(user.getGender());
             }
         });
+
+        binding.btnSaveChanges.setOnClickListener(v -> {
+            String username = binding.customerName.getText().toString();
+            String contact = binding.contactNUmber.getText().toString();
+
+            ((HomeActivity)getActivity()).saveProfileChanges(username, contact);
+        });
     }
 }
