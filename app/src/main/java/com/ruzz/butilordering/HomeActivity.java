@@ -42,9 +42,11 @@ import com.ruzz.butilordering.HomeFragments.OrderFragment;
 import com.ruzz.butilordering.HomeFragments.UserProfiileFragment;
 import com.ruzz.butilordering.Model.AccountModel;
 import com.ruzz.butilordering.Model.CartModel;
+import com.ruzz.butilordering.Model.CategoriesModel;
 import com.ruzz.butilordering.Model.OrderModel;
 import com.ruzz.butilordering.Model.ProductCartModel;
 import com.ruzz.butilordering.Model.ProductModel;
+import com.ruzz.butilordering.Model.SliderData;
 import com.ruzz.butilordering.Model.UserModel;
 import com.ruzz.butilordering.ViewModels.HomeViewModel;
 import com.ruzz.butilordering.ViewModels.HomeViewModelFactory;
@@ -258,6 +260,38 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 });
 
+        database.collection("Advertisement")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
+                        List<SliderData> slidingImages = new ArrayList<>();
+
+                        for (QueryDocumentSnapshot image : queryDocumentSnapshots) {
+                            SliderData currentImage = image.toObject(SliderData.class);
+                            slidingImages.add(currentImage);
+                        }
+
+                        homeViewModel.setSlidingImages(slidingImages);
+                    }
+                });
+
+        database.collection("categories").get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
+                        List<CategoriesModel> categories = new ArrayList<>();
+                        CategoriesModel resetCategory = new CategoriesModel("All", "https://res.cloudinary.com/nathanalz/image/upload/v1640770591/ButilMNL/logosplash_j44oyh.png");
+                        categories.add(resetCategory);
+
+                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                            CategoriesModel category = document.toObject(CategoriesModel.class);
+                            categories.add(category);
+                        }
+                        homeViewModel.setCategories(categories);
+                    }
+                });
+
         getCartItems(currentUser.getUid());
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -297,7 +331,9 @@ public class HomeActivity extends AppCompatActivity {
                     public void onSuccess(@NonNull DocumentSnapshot documentSnapshot) {
                         AccountModel account = documentSnapshot.toObject(AccountModel.class);
                         if (account != null) {
-                            homeViewModel.setLikedProducts(account.getLiked());
+                            if (account.getLiked() != null) {
+                                homeViewModel.setLikedProducts(account.getLiked());
+                            }
                         } else {
                             Toast.makeText(HomeActivity.this, "Failed to fetch liked.",
                                     Toast.LENGTH_SHORT).show();
@@ -449,5 +485,108 @@ public class HomeActivity extends AppCompatActivity {
                 .update("items", FieldValue.arrayRemove(oldItem));
 
         getCartItems(homeViewModel.getCurrentUser().getValue().getUid());
+    }
+
+    public void getFilteredProducts(String category) {
+        database.collection("products").whereEqualTo("categoryId", category)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        List<ProductModel> productList = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            ProductModel currentProduct = new ProductModel(document.getId(), document.getString("name"), document.getString("image"),
+                                    document.getDouble("stocks"), document.getDouble("storageLife"), document.getString("type"),
+                                    document.getString("description"), document.getString("categoryId"), document.getDouble("content"), document.getDouble("price"),
+                                    document.getDouble("promo"));
+                            productList.add(currentProduct);
+                        }
+
+                        homeViewModel.setProductList(productList);
+                    } else {
+                        Toast.makeText(HomeActivity.this, "Failed to fetch products.",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    public void resetProducts() {
+        database.collection("products").orderBy("promo", Query.Direction.DESCENDING).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        List<ProductModel> productList = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            ProductModel currentProduct = new ProductModel(document.getId(), document.getString("name"), document.getString("image"),
+                                    document.getDouble("stocks"), document.getDouble("storageLife"), document.getString("type"),
+                                    document.getString("description"), document.getString("categoryId"), document.getDouble("content"), document.getDouble("price"),
+                                    document.getDouble("promo"));
+                            productList.add(currentProduct);
+                        }
+
+                        homeViewModel.setProductList(productList);
+                    } else {
+                        Toast.makeText(HomeActivity.this, "Failed to fetch products.",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    public void saveProfileChanges(String username, String contact) {
+        database.collection("accounts").document(homeViewModel.getCurrentUser().getValue().getUid())
+                .update("contact", contact);
+
+        String[] names = username.split(" ", 3);
+        String fname = names[0];
+        String lname = names[1];
+
+        database.collection("accounts").document(homeViewModel.getCurrentUser().getValue().getUid())
+                .update("firstName", fname);
+
+        database.collection("accounts").document(homeViewModel.getCurrentUser().getValue().getUid())
+                .update("lastName", lname);
+
+        DocumentReference docRef = database.collection("accounts").document(homeViewModel.getCurrentUser().getValue().getUid());
+        docRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot result = task.getResult();
+                if (result.exists()) {
+                    String userName = result.getString("firstName") + " " + result.getString("lastName");
+                    String gender = result.getString("gender");
+                    String contactNum = result.getString("contact");
+                    UserModel user = new UserModel(result.getId(), userName, gender, homeViewModel.getCurrentUser().getValue().getEmail());
+                    user.setContact(contactNum);
+
+                    homeViewModel.setCurrentUser(user);
+                } else {
+                    Toast.makeText(HomeActivity.this, "User does not exist.",
+                            Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(HomeActivity.this, "Failed to fetch user.",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    public void searchProduct(String prodName) {
+        database.collection("products").whereEqualTo("name", prodName)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        List<ProductModel> productList = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            ProductModel currentProduct = new ProductModel(document.getId(), document.getString("name"), document.getString("image"),
+                                    document.getDouble("stocks"), document.getDouble("storageLife"), document.getString("type"),
+                                    document.getString("description"), document.getString("categoryId"), document.getDouble("content"), document.getDouble("price"),
+                                    document.getDouble("promo"));
+                            productList.add(currentProduct);
+                        }
+
+                        homeViewModel.setProductList(productList);
+                    } else {
+                        Toast.makeText(HomeActivity.this, "Failed to fetch products.",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

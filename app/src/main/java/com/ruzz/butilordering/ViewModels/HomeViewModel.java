@@ -4,10 +4,13 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.android.material.slider.Slider;
 import com.ruzz.butilordering.Model.CartModel;
+import com.ruzz.butilordering.Model.CategoriesModel;
 import com.ruzz.butilordering.Model.OrderModel;
 import com.ruzz.butilordering.Model.ProductCartModel;
 import com.ruzz.butilordering.Model.ProductModel;
+import com.ruzz.butilordering.Model.SliderData;
 import com.ruzz.butilordering.Model.UserModel;
 
 import java.util.ArrayList;
@@ -24,6 +27,8 @@ public class HomeViewModel extends ViewModel {
     private MutableLiveData<String> currentPage = new MutableLiveData<>("Home");
     private MutableLiveData<Double> cartTotalPrice = new MutableLiveData<>();
     private MutableLiveData<List<String>> likedProducts = new MutableLiveData<>();
+    private MutableLiveData<List<CategoriesModel>> categories = new MutableLiveData<>();
+    private MutableLiveData<List<SliderData>> slidingImages = new MutableLiveData<>();
 
     public HomeViewModel() {
         UserModel user = new UserModel("Loading...", "Loading...", "Loading...", "Loading...");
@@ -130,5 +135,21 @@ public class HomeViewModel extends ViewModel {
 
     public LiveData<List<String>> getLikedProducts() {
         return likedProducts;
+    }
+
+    public void setCategories(List<CategoriesModel> categories) {
+        this.categories.setValue(categories);
+    }
+
+    public LiveData<List<CategoriesModel>> getCategories() {
+        return categories;
+    }
+
+    public void setSlidingImages(List<SliderData> images) {
+        this.slidingImages.setValue(images);
+    }
+
+    public LiveData<List<SliderData>> getSlidingImages() {
+        return slidingImages;
     }
 }

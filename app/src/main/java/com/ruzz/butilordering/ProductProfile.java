@@ -149,11 +149,13 @@ public class ProductProfile extends AppCompatActivity {
                         AccountModel account = documentSnapshot.toObject(AccountModel.class);
 
                         if (account != null) {
-                            productViewModel.setLikedProducts(account.getLiked());
+                            if (account.getLiked() != null) {
+                                productViewModel.setLikedProducts(account.getLiked());
 
-                            for (String product : account.getLiked()) {
-                                if (product.equals(productId)) {
-                                    productViewModel.setLikedProduct(true);
+                                for (String product : account.getLiked()) {
+                                    if (product.equals(productId)) {
+                                        productViewModel.setLikedProduct(true);
+                                    }
                                 }
                             }
                         } else {

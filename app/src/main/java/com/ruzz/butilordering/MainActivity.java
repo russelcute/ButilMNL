@@ -74,22 +74,6 @@ public class MainActivity extends AppCompatActivity {
         rvOff.setItemAnimator(new DefaultItemAnimator());
         rvOff.setAdapter(offerAdapter);
 
-        //image slider ito
-        SliderModel[] sliderModels = new SliderModel[]{
-                new SliderModel(R.drawable.image1),
-                new SliderModel(R.drawable.image2),
-                new SliderModel(R.drawable.image3),
-        };
-
-        sliderView = findViewById(R.id.imageSlider);
-        SliderAdapter sliderAdapter = new SliderAdapter(sliderModels,this);
-        sliderView.setAutoCycleDirection(SliderView.LAYOUT_DIRECTION_LTR);
-        sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
-        sliderView.setSliderAdapter(sliderAdapter);
-        sliderView.setAutoCycle(true);
-        sliderView.setScrollTimeInSec(3);
-        sliderView.startAutoCycle();
-
         //Category Products start here
         List<CategoryModel> categoryModelList = new ArrayList<>();
         categoryModelList.add(new CategoryModel(R.drawable.herb,"Herbs"));
