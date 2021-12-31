@@ -3,6 +3,8 @@ package com.ruzz.butilordering;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
@@ -10,7 +12,11 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -36,6 +42,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.ruzz.butilordering.HomeFragments.AboutUs;
 import com.ruzz.butilordering.HomeFragments.CartFragment;
 import com.ruzz.butilordering.HomeFragments.OffersFragment;
 import com.ruzz.butilordering.HomeFragments.OrderFragment;
@@ -43,6 +50,7 @@ import com.ruzz.butilordering.HomeFragments.UserProfiileFragment;
 import com.ruzz.butilordering.Model.AccountModel;
 import com.ruzz.butilordering.Model.CartModel;
 import com.ruzz.butilordering.Model.CategoriesModel;
+import com.ruzz.butilordering.Model.NotificationModel;
 import com.ruzz.butilordering.Model.OrderModel;
 import com.ruzz.butilordering.Model.ProductCartModel;
 import com.ruzz.butilordering.Model.ProductModel;
@@ -61,6 +69,7 @@ import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "Error";
+    private static final String CHANNEL_ID = "Butil_MNL";
     private FirebaseAuth appAuth;
     private FirebaseFirestore database;
     private FragmentManager fragmentManager;
@@ -142,6 +151,12 @@ public class HomeActivity extends AppCompatActivity {
                     transaction_3.replace(R.id.fragment_container_view, UserProfiileFragment.class, null);
                     transaction_3.commit();
                     break;
+                case "About":
+                    FragmentTransaction transaction_4 = fragmentManager.beginTransaction();
+                    transaction_4.setReorderingAllowed(true);
+                    transaction_4.replace(R.id.fragment_container_view, AboutUs.class, null);
+                    transaction_4.commit();
+                    break;
                 default:
                     drawer.closeDrawer(GravityCompat.START);
             }
@@ -151,6 +166,7 @@ public class HomeActivity extends AppCompatActivity {
         checkOut.setOnClickListener(v -> goToCheckoutActivity());
 
         setupDrawerContent(navigation);
+        createNotificationChannel();
 
     }
 
@@ -291,6 +307,10 @@ public class HomeActivity extends AppCompatActivity {
                         homeViewModel.setCategories(categories);
                     }
                 });
+
+        homeViewModel.getUserOrders().observe(this, orders -> {
+            checkDeliveryNotification(orders);
+        });
 
         getCartItems(currentUser.getUid());
 
@@ -556,6 +576,10 @@ public class HomeActivity extends AppCompatActivity {
                     user.setContact(contactNum);
 
                     homeViewModel.setCurrentUser(user);
+
+                    Toast.makeText(HomeActivity.this, "Successfully Updated Profile.",
+                            Toast.LENGTH_SHORT).show();
+                    
                 } else {
                     Toast.makeText(HomeActivity.this, "User does not exist.",
                             Toast.LENGTH_SHORT).show();
@@ -588,5 +612,60 @@ public class HomeActivity extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void checkDeliveryNotification(List<OrderModel> userOrders) {
+        List<OrderModel> allOrders = userOrders;
+        List<NotificationModel> notifications = new ArrayList<>();
+
+        for (OrderModel order : allOrders) {
+            int userLatitude = order.getCustomer().getLatitude().intValue();
+            int userLongitude = order.getCustomer().getLongitude().intValue();
+            int deliveryLatitude = (int) order.getLatitude();
+            int deliveryLongitude = (int) order.getLongitude();
+
+            if (userLatitude == deliveryLatitude && userLongitude == deliveryLongitude && !order.isDelivered()) {
+                NotificationModel currNotification = new NotificationModel("Your order has arrived!", "Your order with ID of " + order.getUserid() +
+                        " is already near your delivery address.");
+
+                notifications.add(currNotification);
+            }
+        }
+
+        for (int x = 0; x < notifications.size(); x++) {
+            NotificationModel notification = notifications.get(x);
+            showNotification(notification.getContent(), notification.getTitle(), x);
+        }
+    }
+
+    private void showNotification(String message, String title, int notificationId) {
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.putExtra("Page", "Orders");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_notification_icon)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setContentIntent(pendingIntent)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(notificationId, builder.build());
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }
