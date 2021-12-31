@@ -107,4 +107,6 @@
     <string name="gcash_error">Gcash account number and the transaction Reference Number is required to place your order.</string>
     <string name="gcash_error_title">Invalid Account and Reference Number</string>
     <string name="button_liked">Liked</string>
+    <string name="channel_name">Order Delivered</string>
+    <string name="channel_description">Notified user when order is delivered</string>
 </resources>
